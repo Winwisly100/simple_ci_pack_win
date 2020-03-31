@@ -12,7 +12,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v1
       - name: print golang
-        run: go --version
+        run: powershell go --version
       - name: download wix msi tools
         run: |
           powershell Invoke-WebRequest https://github.com/wixtoolset/wix3/releases/download/wix3112rtm/wix311-binaries.zip -OutFile wix311.zip 
