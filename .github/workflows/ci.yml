@@ -4,7 +4,7 @@ on:
   push:
 
 jobs:
-  build-package-windows:
+  pack:
     runs-on: windows-latest
     steps:
       - name: Checkout
@@ -21,4 +21,46 @@ jobs:
         run: |
           powershell ./wix311/candle.exe -out simple.wixobj simple.wxs
           powershell ./wix311/light.exe -b . -ext WixUIExtension simple.wixobj -out simple.msi
-      
+      - name: list
+        run: powershell ls
+      - name: "publish action-artifact zip"
+        uses: actions/upload-artifact@v1
+        with:
+          name: msi
+          path: ./simple.msi
+  release:
+    needs: [pack]
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v2
+
+      - name: Download artefacts msi installer
+        uses: actions/download-artifact@v1
+        with:
+          name: msi
+      - name: zip
+        run: |
+         zip installer msi/simple.msi
+         
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - name: Upload Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./installer.zip
+          asset_name: installer.zip
+          asset_content_type: application/zip
