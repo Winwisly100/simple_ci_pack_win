@@ -9,8 +9,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-      - name: Set up Go
-        uses: actions/setup-go@v1
+#       - name: Set up Go
+#         uses: actions/setup-go@v1
 #       - name: print golang
 #         run: powershell go --version
       - name: download wix msi tools
