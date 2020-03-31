@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding='windows-1252'?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Product Id="*"
+        Name="Simple"
+        Language="1033"
+        Version="1.0.0"
+        Manufacturer="Simple Company"
+        UpgradeCode="3f3d6f16-418d-402c-805c-9cbc8ec1be01">
+        <Package Id="*" InstallerVersion="100"
+            Compressed="yes"
+            InstallScope="perMachine"
+            Manufacturer="Simple Company"
+            Description="Installs Simple Software"
+            Keywords="Practice,Installer,MSI"
+            Comments="(c) 2020 Simple Company"/>
+
+        <UIRef Id="WixUI_Minimal"/>
+        <MediaTemplate EmbedCab="yes" />    
+        <Directory Id="TARGETDIR" Name="SourceDir">
+            <Directory Id="ProgramFilesFolder">
+                <Directory Id="Simple" Name="Simple" />
+            </Directory>
+        </Directory>
+        <DirectoryRef Id="Simple">
+            <Component Id="CMP_SIMPLE" Guid="*">
+                <File Id="simple.exe" Source="simple.exe" KeyPath="yes"/>
+            </Component>
+        </DirectoryRef>
+        <Feature Id="MainApplication" Title="simple" Level="1">
+                <ComponentRef Id='CMP_SIMPLE' />
+        </Feature>
+    </Product>
+</Wix>
+
+<!-- <?xml version='1.0' encoding='windows-1252'?>
+<Wix xmlns='http://schemas.microsoft.com/wix/2006/wi'>
+  <Product Name='Simple' Id='*' UpgradeCode='*'
+    Language='1033' Version='1.0.0' Manufacturer='Simple Ltd.'>
+
+    <Package Id='*' Keywords='Installer' Description="Simple Installer"
+      Comments='Simple is a registered trademark of Simple Ltd.' Manufacturer='Simple Ltd.'
+      InstallerVersion='100' Languages='1033' Compressed='yes'  />
+
+    <Media Id='1' Cabinet='Simple.cab' EmbedCab='yes'/>
+
+    <Directory Id='TARGETDIR' Name='SourceDir'>
+      <Directory Id='ProgramFilesFolder' Name='PFiles'>
+        <Directory Id='Simple' Name='Simple'>
+          <Directory Id='INSTALLDIR' Name='Simple'>
+
+            <Component Id='MainExecutable' Guid='*'>
+              <File Id='FoobarEXE' Name='simple.exe' Source='simple.exe' KeyPath='yes'/>
+            </Component>
+
+          </Directory>
+        </Directory>
+      </Directory>
+    </Directory>
+
+    <Feature Id='Complete' Level='1'>
+      <ComponentRef Id='MainExecutable' />
+    </Feature>
+
+  </Product>
+</Wix> -->
+
