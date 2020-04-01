@@ -9,21 +9,23 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-      - name: Set up Go
-        uses: actions/setup-go@v1
-        with:
-          go-version: 1.14.1
-      - name: print golang
-        run: go --version
-      - name: install asti
-        run: |
-          export GOPATH=$HOME/go
-          export GOBIN=$HOME/go/bin
-          export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
-          go get -u github.com/asticode/go-astilectron-bundler/...
-          go get -u github.com/asticode/go-astilectron-bootstrap
-          go install github.com/asticode/go-astilectron-bundler/astilectron-bundler
-        shell: bash
+      - name: sign
+        uses: tools/signtool.exe sign //v //s MY //n "gcn" //fd sha256 //tr http://timestamp.comodoca.com/?td=sha256 //td sha256 simple.exe
+#       - name: Set up Go
+#         uses: actions/setup-go@v1
+#         with:
+#           go-version: 1.14.1
+#       - name: print golang
+#         run: go --version
+#       - name: install asti
+#         run: |
+#           export GOPATH=$HOME/go
+#           export GOBIN=$HOME/go/bin
+#           export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+#           go get -u github.com/asticode/go-astilectron-bundler/...
+#           go get -u github.com/asticode/go-astilectron-bootstrap
+#           go install github.com/asticode/go-astilectron-bundler/astilectron-bundler
+#         shell: bash
       
 
       # - name: download wix msi tools
