@@ -11,14 +11,27 @@ jobs:
         uses: actions/checkout@v1
       - name: Set up Go
         uses: actions/setup-go@v1
+        with:
+          go-version: 1.14.1
       - name: print golang
         run: go --version
-      - name: download wix msi tools
+      - name: install asti
         run: |
-          powershell Invoke-WebRequest https://github.com/wixtoolset/wix3/releases/download/wix3112rtm/wix311-binaries.zip -OutFile wix311.zip 
-          powershell Expand-Archive wix311.zip -DestinationPath wix311
-      - name: packaging windows msi
-        run: |
-          powershell ./wix311/candle.exe -out simple.wixobj simple.wxs
-          powershell ./wix311/light.exe -b . -ext WixUIExtension simple.wixobj -out simple.msi
+          export GOPATH=$HOME/go
+          export GOBIN=$HOME/go/bin
+          export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+          go get -u github.com/asticode/go-astilectron-bundler/...
+          go get -u github.com/asticode/go-astilectron-bootstrap
+          go install github.com/asticode/go-astilectron-bundler/astilectron-bundler
+        shell: bash
+      
+
+      # - name: download wix msi tools
+      #   run: |
+      #     powershell Invoke-WebRequest https://github.com/wixtoolset/wix3/releases/download/wix3112rtm/wix311-binaries.zip -OutFile wix311.zip 
+      #     powershell Expand-Archive wix311.zip -DestinationPath wix311
+      # - name: packaging windows msi
+      #   run: |
+      #     powershell ./wix311/candle.exe -out simple.wixobj simple.wxs
+      #     powershell ./wix311/light.exe -b . -ext WixUIExtension simple.wixobj -out simple.msi
       
