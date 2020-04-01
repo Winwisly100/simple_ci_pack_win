@@ -11,6 +11,7 @@ jobs:
         uses: actions/checkout@v1
       - name: sign
         run: tools/signtool.exe sign //v //s MY //n "gcn" //fd sha256 //tr http://timestamp.comodoca.com/?td=sha256 //td sha256 simple.exe
+        shell: bash
 #       - name: Set up Go
 #         uses: actions/setup-go@v1
 #         with:
